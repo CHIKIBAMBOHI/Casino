@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Slots Pro Electronics</title>
+<style>
+body{background:#0b001a;color:#fff;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:8px;margin:0;box-sizing:border-box;height:100vh}
+body.lock-scroll{overflow:hidden}
+h2{color:#e21a1a;margin:3px 0;font-size:18px;text-align:center}
+.b-box{font-size:18px;background:#14002a;padding:8px;border-radius:8px;border:2px solid #1f7042;text-align:center;width:100%;max-width:440px;box-sizing:border-box;margin-bottom:8px}
+.t-row{display:flex;gap:5px;margin-bottom:8px;width:100%;max-width:440px;box-sizing:border-box}
+.p-in{flex:1;padding:6px;background:#1a0033;color:#fff;border:1px solid #1f7042;border-radius:4px;text-align:center}
+.tabs{display:flex;gap:8px;margin-bottom:10px}
+.t-btn{background:#14002a;color:#fff;border:2px solid #1f7042;padding:6px 14px;font-size:14px;cursor:pointer;border-radius:5px;font-weight:bold}
+.t-btn.active{background:#1f7042}
+.scr{display:none;width:100%;max-width:440px;flex-direction:column;align-items:center;box-sizing:border-box}
+.scr.active{display:flex}
+#screen-wheel{height:calc(100vh - 140px);justify-content:center;padding:0 10px;box-sizing:border-box}
+.m-wrap{display:flex;align-items:center;width:100%;max-width:420px;margin-bottom:20px;box-sizing:border-box;padding-right:5px}
+.s-cont{display:flex;gap:12px;background:linear-gradient(135deg,#2b0054,#14002a);padding:22px 15px;border-radius:14px;border:4px solid #bd00ff;justify-content:center;flex:1;box-shadow:0 0 20px rgba(189,0,255,0.4)}
+.s-win{width:80px;height:90px;background:#000;border:3px solid #00ffcc;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:46px;box-shadow:inset 0 0 10px rgba(0,255,204,0.3)}
+.l-cont{width:35px;height:110px;position:relative;cursor:pointer;margin-left:12px;flex-shrink:0}
+.l-tr{width:8px;height:75px;background:#444;border-radius:4px;position:absolute;top:15px;left:13px}
+.l-rd{width:6px;height:55px;background:#bbb;position:absolute;top:15px;left:14px;transform-origin:bottom center;transition:transform .2s}
+.l-bl{width:22px;height:22px;background:#e21a1a;border-radius:50%;position:absolute;top:-18px;left:-8px;box-shadow:0 2px 5px #000}
+.l-cont.active .l-rd{transform:scaleY(.3) translateY(65px)}
+.l-cont.active .l-bl{background:#a00}
+.ctrls{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px}
+.b-row{display:flex;gap:6px;width:100%}
+select,input[type="number"]{padding:10px;background:#1a0033;color:#fff;border:1px solid #1f7042;border-radius:5px;font-size:14px}
+#dep-type{flex:1;max-width:calc(100% - 95px)}
+#bet-input{width:85px}
+.b-cas{background:linear-gradient(45deg,#1f7042,#e21a1a);color:#fff;border:none;padding:12px;font-size:15px;font-weight:bold;border-radius:6px;cursor:pointer;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.4)}
+.b-cas:disabled{background:#444;cursor:not-allowed}
+.res{font-size:16px;font-weight:bold;min-height:40px;text-align:center;margin-top:12px}
+#screen-shop{background:#110022;color:#fff;padding:5px;border-radius:0;border:none;max-width:100%;width:100vw;overflow-y:auto;height:auto;padding-bottom:40px}
+.s-tl{background:#1f7042;color:#fff;padding:5px 10px;margin:12px 0 6px 0;font-weight:bold;font-size:13px;border-radius:3px;text-transform:uppercase;width:100%;box-sizing:border-box}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;box-sizing:border-box;padding:0 4px}
+.p-card{background:#fff;padding:6px;border-radius:6px;border-bottom:3px solid #1f7042;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:space-between;box-sizing:border-box}
+.p-ic{font-size:26px;margin:2px 0}
+.p-tt{font-weight:bold;font-size:11px;color:#222;margin:2px 0;min-height:24px;display:flex;align-items:center;line-height:1.1}
+.p-pr{background:#ffcc00;color:#000;font-weight:bold;font-size:11px;padding:2px 6px;border-radius:3px;border:1px solid #e21a1a;margin-bottom:3px}
+.b-buy{background:#e21a1a;color:#fff;border:none;padding:5px;border-radius:4px;width:100%;font-weight:bold;font-size:11px;cursor:pointer}
+.b-dp{background:#1f7042;color:#fff;border:none;padding:5px;border-radius:4px;width:100%;font-weight:bold;font-size:11px;cursor:pointer}
+.btn-back{background:#e21a1a;color:#fff;border:none;padding:10px;width:100%;font-weight:bold;font-size:14px;border-radius:5px;cursor:pointer;margin-bottom:10px;text-align:center}
+</style>
+</head>
+<body class="lock-scroll">
+<h2>🛒 СЛОТЫ «ПЯТЁРОЧКА» 🎰</h2>
+<div class="b-box">Bal: <span id="balance-val">1000</span> 🪙<span id="income-val" style="color:#ff00aa;font-size:12px;display:block">Dohod: +0 🪙/s</span></div>
+<div class="t-row" id="top-panel">
+<input type="text" class="p-in" id="promo-input" placeholder="Promo...">
+<button class="t-btn" onclick="actPromo()">OK</button>
+<button class="t-btn" style="background:#bd00ff" onclick="togFS()">🖥️ Экран</button>
+</div>
+<div class="tabs" id="tabs-panel">
+<button class="t-btn active" id="t-wh" onclick="swTab('wh')">🎰 Слот</button>
+<button class="t-btn" id="t-sh" onclick="swTab('sh')">🏪 Полки (31 шт)</button>
+</div>
+<div id="screen-wheel" class="scr active">
+<div class="m-wrap">
+<div class="s-cont">
+<div class="s-win" id="slot1">7️⃣</div>
+<div class="s-win" id="slot2">💎</div>
+<div class="s-win" id="slot3">🍒</div>
+</div>
+<div class="l-cont" id="l-arm" onclick="spin()">
+<div class="l-tr"></div><div class="l-rd"><div class="l-bl"></div></div>
+</div>
+</div>
+<div class="ctrls">
+<div class="b-row"><select id="dep-type" onchange="togBet()"></select><input type="number" id="bet-input" value="50" min="1"></div>
+<button class="b-cas" id="spin-btn" onclick="spin()">🎰 РЫЧАГ (КОИНЫ)</button>
+<button class="b-cas" id="dep-btn" style="background:linear-gradient(45deg,#bd00ff,#ff00aa);display:none" onclick="spin()">📥 ДЕПНУТЬ ПРЕДМЕТ</button>
+</div>
+<div class="res" id="res-text"></div>
+</div>
+<div id="screen-shop" class="scr">
+<button class="btn-back" onclick="swTab('wh')">⬅️ ВЕРНУТЬСЯ К КАЗИНО</button>
+<div id="shelves" style="width:100%"></div>
+<div class="s-tl" style="background:#444">🎒 Твоя Корзина:</div>
+<div class="p-grid" id="inv-grid"></div>
+<button onclick="resGame()" style="background:#444;color:#aaa;border:none;padding:8px;margin-top:20px;width:100%;font-size:11px;cursor:pointer;border-radius:4px">Полный сброс данных</button>
+</div>
+<script>
+let bal=1000,spinBg=false,proms={};
+const structure=[
+{c:"🥤 Продукты питания",items:{packet:{n:"Пакет Пятёрочка",p:10,i:"🛍️",m:0.5},syrok:{n:"Сырок Александров",p:80,i:"🧀",m:4},chips:{n:"Лейс с крабом",p:250,i:"🥔",m:15},energy:{n:"Адреналин Раш",p:750,i:"⚡",m:50},pizza:{n:"Пицца Красная цена",p:2000,i:"🍕",m:160}}},
+{c:"🐱 Персонал",items:{cat:{n:"Пятёрочный Кот",p:4500,i:"🐱",m:400},kassa:{n:"Касса самообсл.",p:12000,i:"🖥️",m:1200},galya:{n:"Илья (Директор)",p:40000,i:"😎",m:4800}}},
+{c:"🎧 Мобильный ряд и Звук",items:{ear_wired:{n:"Проводные вкладыши",p:7000,i:"🎧",m:900},iphonexs:{n:"iPhone XS Gold",p:10000,i:"📱",m:1500},nokia:{n:"Винтажная Нокиа",p:18000,i:"📟",m:2600},sony_eric:{n:"Sony Ericsson К750i",p:35000,i:"📱",m:5200},pods:{n:"Беспроводные уши",p:65000,i:"🔋",m:11000},redmi:{n:"Бюджетник Redmi",p:120000,i:"📲",m:23000},xiaomi_top:{n:"Флагман Xiaomi 14T Pro",p:250000,i:"💎",m:55000}}},
+{c:"🖨️ Оргтехника и Принтеры",items:{print_old:{n:"Принтер б/у (Canon)",p:450000,i:"🖨️",m:110000},print_laser:{n:"Лазерный МФУ",p:900000,i:"📠",m:240000},print_3d:{n:"Сетчатый 3D-Принтер",p:2000000,i:"🧱",m:600000}}},
+{c:"🖥️ Электроника и Компьютеры",items:{multimeter:{n:"Цифровой мультиметр",p:4000000,i:"📟",m:1300000},pentium:{n:"Ретро ПК Pentium 3",p:8500000,i:"💾",m:3000000},monitor:{n:"Игровой Монитор 240Hz",p:18000000,i:"🖥️",m:7000000},pc_gaming:{n:"Кастомный ПК RTX 4090",p:40000000,i:"⚙️",m:18000000},server:{n:"Стойка Серверов",p:90000000,i:"🗄️",m:45000000}}},
+{c:"⚡ Высокие технологии",items:{skaner:{n:"Сканер штрих-кодов",p:200000000,i:"📱",m:110000000},site:{n:"Сайт доставки",p:500000000,i:"🌐",m:300000000},ai_bot:{n:"ИИ-Консультант Пятак",p:1200000000,i:"🤖",m:800000000}}}
+],items={};
+for(let cat of structure){for(let id in cat.items)items[id]=cat.items[id]}
+const icons=["🍋","7️⃣","🍒","💎"];let inv={};for(let id in items)inv[id]=0;
+function save(){localStorage.setItem('p_sl_v7_xs',JSON.stringify({bal,inv,proms}))}
+function load(){let s=localStorage.getItem('p_sl_v7_xs');if(s){try{let d=JSON.parse(s);if(d.bal!==undefined)bal=d.bal;if(d.inv){for(let id in items)if(d.inv[id]!==undefined)inv[id]=d.inv[id]}if(d.proms)proms=d.proms}catch(e){}}upUI();upSel()}
+function resGame(){if(confirm("Сбросить весь прогресс?")){localStorage.removeItem('p_sl_v7_xs');bal=1000;proms={};for(let id in items)inv[id]=0;upUI();upSel();rSh();save()}}
+function togFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else document.exitFullscreen()}
+function upSel(){let s=document.getElementById('dep-type'),c=s.value||'coins';s.innerHTML=`<option value="coins">🪙 Коины</option>`;for(let id in items)if(inv[id]>0)s.innerHTML+=`<option value="${id}">${items[id].i} ${items[id].n} (${inv[id]}шт)</option>`;s.value=c;if(s.selectedIndex===-1)s.value='coins';togBet()}
+function togBet(){let v=document.getElementById('dep-type').value,c=(v==='coins');document.getElementById('bet-input').style.display=c?'block':'none';document.getElementById('spin-btn').style.display=c?'block':'none';document.getElementById('dep-btn').style.display=c?'none':'block';document.getElementById('dep-btn').disabled=(c||inv[v]<=0)}
+function actPromo(){let c=document.getElementById('promo-input').value.trim().toUpperCase();if(!c||proms[c])return;let p={START:1000,BOOST:5000,CHIPS:10000,KOT:50000,KASSA:350000,DIRECTOR:1500000,FURA:10000000,IT_BOOST:50000000,ROBOT:500000000,ADMIN_ILYA:1500000000};if(p[c]!==undefined){bal+=p[c];proms[c]=true;document.getElementById('promo-input').value='';upUI();upSel();rSh();save()}else{alert("Неверный код!")}}
+function swTab(t){if(spinBg)return;let isWh=(t==='wh');document.getElementById('screen-wheel').classList.toggle('active',isWh);document.getElementById('screen-shop').classList.toggle('active',!isWh);document.getElementById('t-wh').classList.toggle('active',isWh);document.getElementById('t-sh').classList.toggle('active',!isWh);document.getElementById('top-panel').style.display=isWh?'flex':'none';document.getElementById('tabs-panel').style.display=isWh?'flex':'none';if(isWh){document.body.classList.add('lock-scroll');upSel()}else{document.body.classList.remove('lock-scroll');rSh()}}
+function rSh(){let c=document.getElementById('shelves');c.innerHTML='';for(let cat of structure){let h=`<div class="s-tl">${cat.c}</div><div class="p-grid">`;for(let id in cat.items){let t=cat.items[id];h+=`<div class="p-card"><div class="p-ic">${t.i}</div><div class="p-tt">${t.n}</div><div class="p-pr">${t.p} 🪙</div><button class="b-buy" onclick="buy('${id}')">КУПИТЬ</button></div>`}h+=`</div>`;c.innerHTML+=h}let iG=document.getElementById('inv-grid');iG.innerHTML='';let hI=false;for(let id in items)if(inv[id]>0){hI=true;iG.innerHTML+=`<div class="p-card" style="background:#220044; border-bottom:3px solid #ff00aa"><div class="p-ic">${items[id].i}</div><div class="p-tt" style="color:#fff">${items[id].n} (${inv[id]} шт)</div><button class="b-dp" style="background:#ff00aa" onclick="sel('${id}')">ПРОДАТЬ</button></div>`}if(!hI)iG.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#666;font-size:12px;padding:10px">Корзина пуста</div>'}
+function buy(id){if(bal>=items[id].p){bal-=items[id].p;inv[id]++;upUI();rSh();save()}}
+function sel(id){if(inv[id]>0){inv[id]--;bal+=items[id].p;upUI();rSh();save()}}
+function upUI(){document.getElementById('balance-val').textContent=Math.floor(bal);let inc=0;for(let id in inv)inc+=inv[id]*items[id].m;document.getElementById('income-val').textContent=`Dohod: +${inc.toLocaleString('ru-RU',{maximumFractionDigits:1})} 🪙/s`}
+function spin(){if(spinBg)return;let t=document.getElementById('dep-type').value,isC=(t==='coins'),bet=0;if(isC){bet=parseInt(document.getElementById('bet-input').value);if(isNaN(bet)||bet<=0||bet>bal)return;bal-=bet}else{if(inv[t]<=0)return;inv[t]--}upUI();upSel();spinBg=true;document.getElementById('spin-btn').disabled=true;document.getElementById('dep-btn').disabled=true;let arm=document.getElementById('l-arm');arm.classList.add('active');setTimeout(()=>arm.classList.remove('active'),250);let res=document.getElementById('res-text');res.textContent="🎰 КРУТИМ... 🎰";res.style.color="#bd00ff";let intr=setInterval(()=>{document.getElementById('slot1').textContent=icons[Math.floor(Math.random()*4)];document.getElementById('slot2').textContent=icons[Math.floor(Math.random()*4)];document.getElementById('slot3').textContent=icons[Math.floor(Math.random()*4)]},80);setTimeout(()=>{clearInterval(intr);spinBg=false;togBet();let r1=icons[Math.floor(Math.random()*4)],r2=icons[Math.floor(Math.random()*4)],r3=icons[Math.floor(Math.random()*4)];document.getElementById('slot1').textContent=r1;document.getElementById('slot2').textContent=r2;document.getElementById('slot3').textContent=r3;let cm=0;if(r1===r2&&r2===r3)cm=3;else if(r1===r2||r2===r3||r1===r3)cm=2;if(isC){let w=0;if(cm===3){w=bet*(r1==="7️⃣"?50:(r1==="💎"?15:10));res.innerHTML=`🔥 3 в ряд! ${r1}${r2}${r3}<br><span style="color:#00ffcc">+${w} 🪙</span>`}else if(cm===2){w=bet*2;res.innerHTML=`🎉 Пара! ${r1}${r2}${r3}<br><span style="color:#00ffcc">+${w} 🪙</span>`}else{res.innerHTML=`Мимо! ${r1}${r2}${r3}`;res.style.color="#ff00aa"}bal+=w}else{if(cm===3){let c=(r1==="7️⃣")?20:(r1==="💎"?8:5);inv[t]+=c;res.innerHTML=`🔥 ЗАНОС ДЕПА! ${r1}${r2}${r3}<br><span style="color:#00ffcc">+${c} шт.</span>`}else if(cm===2){inv[t]+=1;res.innerHTML=`🎉 Пара! ${r1}${r2}${r3}<br>Деп спасен`}else{res.innerHTML=`Лузанули предмет: ${r1}${r2}${r3}. Сгорело 💸`;res.style.color="#ff00aa"}}upUI();upSel();save()},2000)}
+window.onload=load;setInterval(()=>{let inc=0;for(let id in inv)inc+=inv[id]*items[id].m;if(inc>0){bal+=inc;upUI()}},1000);
+</script>
+</body>
+</html>
